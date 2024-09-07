@@ -1,487 +1,641 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Shopy Bros - Explore our high-quality services.">
-    <meta name="keywords" content="Shopy Bros, services, portfolio, testimonials, team">
-    <meta name="author" content="Your Name">
-    <title>Shopy Bros - Home</title>
+    <title>Prime Bazzar</title>
     <style>
-        /* Basic reset for margins and paddings */
-        * {
+        /* Your existing CSS */
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             box-sizing: border-box;
+            margin-top: 60px;
         }
 
-        /* Styling for the navigation bar */
-        .navbar {
-            background-color: #333;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #FF9E01;
-        }
-
-        .navbar img {
-            height: 40px;
-            width: auto;
-        }
-
-        .navbar .title {
-            font-size: 24px;
-            font-weight: bold;
-            flex: 1;
-            text-align: center;
-        }
-
-        .nav-links {
-            list-style-type: none;
-            display: flex;
-            padding: 0;
-        }
-
-        .nav-links li {
-            margin: 0 15px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 10px;
-            display: block;
-        }
-
-        .nav-links a:hover, .nav-links a:focus {
-            background-color: #575757;
-            border-radius: 5px;
-        }
-
-        .video-section {
-            text-align: center;
-            padding: 1.5rem;
-            background-color: #f4f4f4;
-        }
-
-        .video-section video {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .video-section h2 {
-            margin-bottom: 1rem;
-            font-size: 1.75rem;
-        }
-
-        .products {
-            padding: 1.5rem;
-            background-color: #f4f4f4;
+        .product-wrapper {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem;
+            gap: 20px;
+            justify-content: center;
         }
 
-        .product-item {
-            display: flex;
-            flex-direction: column;
-            width: calc(25% - 1.5rem);
+        .product {
+            width: calc(25% - 20px);
+            box-sizing: border-box;
+            text-align: center;
+            background: #fefefe;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 0.625rem;
-            padding: 1.5rem;
-            text-align: left;
-            background-color: #fff;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-            position: relative;
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease;
         }
 
-        .product-item img {
+        .product:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .product img {
             width: 100%;
-            height: auto;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .product-slider {
-            position: relative;
-            overflow: hidden;
-            height: 15rem;
-            margin-bottom: 1rem;
-        }
-
-        .slider-images {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-
-        .slider-images img {
-            width: 100%;
-            height: auto;
-        }
-
-        .slider-buttons {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-        }
-
-        .slider-button {
-            background-color: rgba(0, 0, 0, 0.5);
-            border: none;
-            color: white;
-            padding: 0.75rem;
+            max-width: 250px;
+            border: 1px solid #ddd;
+            padding: 5px;
             cursor: pointer;
-            font-size: 1.25rem;
+            border-radius: 8px;
         }
 
-        .slider-button:hover, .slider-button:focus {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .product-item h3 {
-            font-size: 1.5rem;
-            margin: 0.75rem 0;
-        }
-
-        .product-item p {
-            font-size: 1.25rem;
+        .product h2 {
+            font-size: 1.2em;
+            margin-top: 10px;
             color: #333;
         }
 
-        .product-description {
-            font-size: 1.125rem;
-            color: #666;
-            margin: 0.75rem 0;
-        }
-
-        .more-description {
+        .modal {
             display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
         }
 
-        .show-more-button {
-            background-color: #d9d9d9;
-            color: black;
-            padding: 0.75rem 1.25rem;
-            text-decoration: none;
-            border-radius: 0.375rem;
-            font-size: 1rem;
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
-            border: none;
-            margin-bottom: 0.5rem; /* Space between See More and button row */
-            display: block;
-            text-align: center;
         }
 
-        .show-more-button:hover, .show-more-button:focus {
-            background-color: #a6a6a6;
-        }
-
-        .button-container {
-            display: flex;
-            gap: 0.5rem; /* Space between buttons */
-            margin-top: 0.5rem; /* Space above the button container */
-        }
-
-        .buy-button, .copy-id-button {
-            display: inline-block;
-            padding: 0.5rem 1rem; /* Smaller padding for reduced button size */
+        .close:hover,
+        .close:focus {
+            color: black;
             text-decoration: none;
-            border-radius: 0.375rem;
-            font-size: 1rem; /* Smaller font size */
+        }
+
+        .slider {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        .slides {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slides img {
+            width: 100%;
+            display: none;
+            border-radius: 8px;
+        }
+
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .buy-btn, .copy-id-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        .copy-id-btn {
+            background-color: #008CBA;
+        }
+
+        .description, .price {
+            margin-top: 10px;
+        }
+
+        .price {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .copy-id-btn {
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Navbar styles */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .navbar-logo {
+            height: 40px;
+            align-items: center;
             text-align: center;
         }
 
-        .buy-button {
-            background-color: black;
-            color: White;
-            border: 2px solid #000;
-        }
+        @media (max-width: 768px) {
+            .product {
+                width: calc(50% - 20px);
+            }
 
-        .buy-button:hover, .buy-button:focus {
-            background-color: #000;
-        }
+            .modal-content {
+                width: 90%;
+            }
 
-        .copy-id-button {
-            background-color: white;
-            color: #000;
-            border: 2px solid #000;
-        }
-        
-        @media (max-width: 48em) {
-            .navbar {
+            nav {
                 flex-direction: column;
-                text-align: center;
+                align-items: flex-start;
             }
 
-            .nav-links {
-                flex-direction: column;
-                margin-top: 1rem;
+            .navbar-title {
+                font-size: 1em;
+                margin: 10px 0;
             }
 
-            .nav-links li {
-                margin: 0.75rem 0;
-            }
-
-            .products {
-                padding: 1rem;
-            }
-
-            .product-item {
-                width: 100%;
-                margin: 1rem 0;
-            }
-
-            .button-container {
-                flex-direction: column; /* Stack buttons vertically on smaller screens */
-            }
-
-            .button-container a {
-                margin-bottom: 0.5rem; /* Space between stacked buttons */
+            .navbar-links {
+                justify-content: flex-end;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar" aria-label="Main Navigation">
-            <a href="#home" aria-label="Home">
-                <img src="SHOPY BROS L.png" alt="Cadd Plans Logo">
-            </a>
-            <div class="title">Cars And Bikes</div>
-            <ul class="nav-links">
-                <li><a href="#home" aria-label="Home">Home</a></li>
-                <li><a href="#services" aria-label="Services">Services</a></li>
-                
-            </ul>
-        </nav>
-    </header>
 
-    <main>
-        <section class="video-section">
-            <h2>How to Buy Our Products</h2>
-            <video controls>
-                <source src="videos/how-to-buy.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <p>Watch this video to learn how to purchase our products easily.</p>
-        </section>
-        
-        <section class="products" id="products">
-            <!-- Product 1 -->
-            <div class="product-item">
-                <div class="product-slider">
-                    <div class="slider-images">
-                        <img src="Mens bag1.1.jpg" alt="Product 1 - Image 1">
-                        <img src="Mens bag1.2.jpg" alt="Product 1 - Image 2">
-                        <img src="Mens bag1.3.jpg" alt="Product 1 - Image 3">
-                        <img src="Mens bag1.4.jpg" alt="Product 1 - Image 3">
-                    </div>
-                    <div class="slider-buttons">
-                        <button class="slider-button prev" aria-label="Previous Slide">❮</button>
-                        <button class="slider-button next" aria-label="Next Slide">❯</button>
-                    </div>
-                </div>
-                <h3>Product 1</h3>
-                <p>Price: ₹500 Free delivery</p>
-                <p class="product-description">Length - 60cm , breadth - 30cm , Height - 30cm</p>
-                <p class="product-description more-description">This is a high-quality product made with the finest materials. Perfect for everyday use and stylish in design.</p>
-                <button class="show-more-button">See More</button>
-                <div class="button-container">
-                    <a href="checkout page.html" class="buy-button">Buy Now</a>
-                    <button class="copy-id-button" data-id="product1-id">Copy Product ID</button>
-                </div>
+<nav>
+    <img src="Prime Bazzar Logo.png" alt="Logo" class="navbar-logo">
+</nav>
+
+<div class="container">
+    <div class="product-wrapper">
+        <!-- Product 1 -->
+        <div class="product">
+            <img src="car1.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal1')">
+            <h2>Biker Boots</h2>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product">
+            <img src="car2.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal2')">
+            <h2>Biker Boots</h2>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product">
+            <img src="car3.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal3')">
+            <h2>Biker Boots</h2>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product">
+            <img src="car4.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal4')">
+            <h2>Mens Latest Light Weight Stylish Slipper</h2>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product">
+            <img src="car5.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal5')">
+            <h2>Unique Fashionable Casual Sneaker</h2>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product">
+            <img src="car6.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal6')">
+            <h2>Unique Fashionable Casual Sneaker</h2>
+        </div>
+
+        <!-- Product 7 -->
+        <div class="product">
+            <img src="car7.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal7')">
+            <h2>Premium Casual Sneaker</h2>
+        </div>
+
+        <!-- Product 8 -->
+        <div class="product">
+            <img src="car8.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal8')">
+            <h2>Biker Boots</h2>
+        </div>
+
+        <!-- Product 9 -->
+        <div class="product">
+            <img src="car9.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal9')">
+            <h2>Girls Printed Sneaker</h2>
+        </div>
+
+        <!-- Product 10 -->
+        <div class="product">
+            <img src="car10.1.jpg" alt="Biker Boots Thumbnail" onclick="openModal('modal10')">
+            <h2>Attractive Black Shine Bellines For Womens And Girls</h2>
+        </div>
+
+       
+    </div>
+</div>
+
+<!-- Modals -->
+<!-- Modal 1 -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal1')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car1.1.jpg" alt="Biker Boots Image 1">
+                <img src="car1.2.jpg" alt="Biker Boots Image 2">
+                <img src="car1.3.jpg" alt="Biker Boots Image 3">
             </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal1')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal1')">&#10095;</a>
+        </div>
+        <div class="price">₹550 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Mens<br>Colour :- Beige<br>Pattern :- Solid<br>Ankle Height :- High Top</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal1')">Copy ID</button>
+    </div>
+</div>
 
-            <!-- Product 2 -->
-            <div class="product-item">
-                <div class="product-slider">
-                    <div class="slider-images">
-                        <img src="bags.jpeg" alt="Product 2 - Image 1">
-                        <img src="bags.jpeg" alt="Product 2 - Image 2">
-                        <img src="bags.jpeg" alt="Product 2 - Image 3">
-                    </div>
-                    <div class="slider-buttons">
-                        <button class="slider-button prev" aria-label="Previous Slide">❮</button>
-                        <button class="slider-button next" aria-label="Next Slide">❯</button>
-                    </div>
-                </div>
-                <h3>Product 2</h3>
-                <p>Price: ₹500 Free delivery</p>
-                <p class="product-description">Length - 60cm , breadth - 30cm , Height - 30cm</p>
-                <p class="product-description more-description">This is a high-quality product made with the finest materials. Perfect for everyday use and stylish in design.</p>
-                <button class="show-more-button">See More</button>
-                <div class="button-container">
-                    <a href="checkout page.html" class="buy-button">Buy Now</a>
-                    <button class="copy-id-button" data-id="product2-id">Copy Product ID</button>
-                </div>
+<!-- Modal 2 -->
+<div id="modal2" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal2')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car2.1.jpg" alt="Biker Boots Image 1">
+                <img src="car2.2.jpg" alt="Biker Boots Image 2">
+                <img src="car2.3.jpg" alt="Biker Boots Image 3">
             </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal2')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal2')">&#10095;</a>
+        </div>
+        <div class="price">₹550 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Mens<br>Colour :- Black<br>Pattern :- Solid<br>Ankle Height :- High Top</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal2')">Copy ID</button>
+    </div>
+</div>
 
-            <!-- Product 3 -->
-            <div class="product-item">
-                <div class="product-slider">
-                    <div class="slider-images">
-                        <img src="bags.jpeg" alt="Product 3 - Image 1">
-                        <img src="bags.jpeg" alt="Product 3 - Image 2">
-                        <img src="bags.jpeg" alt="Product 3 - Image 3">
-                    </div>
-                    <div class="slider-buttons">
-                        <button class="slider-button prev" aria-label="Previous Slide">❮</button>
-                        <button class="slider-button next" aria-label="Next Slide">❯</button>
-                    </div>
-                </div>
-                <h3>Product 3</h3>
-                <p>Price: ₹500 Free delivery</p>
-                <p class="product-description">Length - 60cm , breadth - 30cm , Height - 30cm</p>
-                <p class="product-description more-description">This is a high-quality product made with the finest materials. Perfect for everyday use and stylish in design.</p>
-                <button class="show-more-button">See More</button>
-                <div class="button-container">
-                    <a href="checkout page.html" class="buy-button">Buy Now</a>
-                    <button class="copy-id-button" data-id="product3-id">Copy Product ID</button>
-                </div>
+<!-- Modal 3 -->
+<div id="modal3" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal3')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car3.1.jpg" alt="Biker Boots Image 1">
             </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal3')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal3')">&#10095;</a>
+        </div>
+        <div class="price">₹550 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Mens<br>Colour :- Brown<br>Pattern :- Solid<br>Ankle Height :- High Top</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal3')">Copy ID</button>
+    </div>
+</div>
 
-            <!-- Product 4 -->
-            <div class="product-item">
-                <div class="product-slider">
-                    <div class="slider-images">
-                        <img src="bags.jpeg" alt="Product 4 - Image 1">
-                        <img src="bags.jpeg" alt="Product 4 - Image 2">
-                        <img src="bags.jpeg" alt="Product 4 - Image 3">
-                    </div>
-                    <div class="slider-buttons">
-                        <button class="slider-button prev" aria-label="Previous Slide">❮</button>
-                        <button class="slider-button next" aria-label="Next Slide">❯</button>
-                    </div>
-                </div>
-                <h3>Product 4</h3>
-                <p>Price: ₹500 Free delivery</p>
-                <p class="product-description">Length - 60cm , breadth - 30cm , Height - 30cm</p>
-                <p class="product-description more-description">This is a high-quality product made with the finest materials. Perfect for everyday use and stylish in design.</p>
-                <button class="show-more-button">See More</button>
-                <div class="button-container">
-                    <a href="checkout page.html" class="buy-button">Buy Now</a>
-                    <button class="copy-id-button" data-id="product4-id">Copy Product ID</button>
-                </div>
+<!-- Modal 4 -->
+<div id="modal4" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal4')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car4.1.jpg" alt="Biker Boots Image 1">
+                <img src="car4.2.jpg" alt="Biker Boots Image 2">
             </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal4')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal4')">&#10095;</a>
+        </div>
+        <div class="price">₹250 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Mens<br>Colour :- Maroon<br>Pattern :- Solid<br>Material :- Syntethic Leather</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal4')">Copy ID</button>
+    </div>
+</div>
 
-             <!-- Product 1 -->
-            <div class="product-item">
-                <div class="product-slider">
-                    <div class="slider-images">
-                        <img src="Mens bag1.1.jpg" alt="Product 1 - Image 1">
-                        <img src="Mens bag1.2.jpg" alt="Product 1 - Image 2">
-                        <img src="Mens bag1.3.jpg" alt="Product 1 - Image 3">
-                        <img src="Mens bag1.4.jpg" alt="Product 1 - Image 3">
-                    </div>
-                    <div class="slider-buttons">
-                        <button class="slider-button prev" aria-label="Previous Slide">❮</button>
-                        <button class="slider-button next" aria-label="Next Slide">❯</button>
-                    </div>
-                </div>
-                <h3>Product 1</h3>
-                <p>Price: ₹500 Free delivery</p>
-                <p class="product-description">Length - 60cm , breadth - 30cm , Height - 30cm</p>
-                <p class="product-description more-description">This is a high-quality product made with the finest materials. Perfect for everyday use and stylish in design.</p>
-                <button class="show-more-button">See More</button>
-                <div class="button-container">
-                    <a href="checkout page.html" class="buy-button">Buy Now</a>
-                    <button class="copy-id-button" data-id="product1-id">Copy Product ID</button>
-                </div>
+<!-- Modal 5 -->
+<div id="modal5" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal5')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car5.1.jpg" alt="Biker Boots Image 1">
+                <img src="car5.2.jpg" alt="Biker Boots Image 2">
             </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal5')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal5')">&#10095;</a>
+        </div>
+        <div class="price">₹500 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Mens<br>Colour :- Red<br>Pattern :- Solid<br>Material :- Syntethic Leather</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal5')">Copy ID</button>
+    </div>
+</div>
 
-             <!-- Product 1 -->
-            <div class="product-item">
-                <div class="product-slider">
-                    <div class="slider-images">
-                        <img src="Mens bag1.1.jpg" alt="Product 1 - Image 1">
-                        <img src="Mens bag1.2.jpg" alt="Product 1 - Image 2">
-                        <img src="Mens bag1.3.jpg" alt="Product 1 - Image 3">
-                        <img src="Mens bag1.4.jpg" alt="Product 1 - Image 3">
-                    </div>
-                    <div class="slider-buttons">
-                        <button class="slider-button prev" aria-label="Previous Slide">❮</button>
-                        <button class="slider-button next" aria-label="Next Slide">❯</button>
-                    </div>
-                </div>
-                <h3>Product 1</h3>
-                <p>Price: ₹500 Free delivery</p>
-                <p class="product-description">Length - 60cm , breadth - 30cm , Height - 30cm</p>
-                <p class="product-description more-description">This is a high-quality product made with the finest materials. Perfect for everyday use and stylish in design.</p>
-                <button class="show-more-button">See More</button>
-                <div class="button-container">
-                    <a href="checkout page.html" class="buy-button">Buy Now</a>
-                    <button class="copy-id-button" data-id="product1-id">Copy Product ID</button>
-                </div>
+<!-- Modal 6 -->
+<div id="modal6" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal6')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car6.1.jpg" alt="Biker Boots Image 1">
+                <img src="car6.2.jpg" alt="Biker Boots Image 2">
             </div>
-            
-        </section>
-    </main>
+            <a class="prev" onclick="plusSlides(-1, 'modal6')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal6')">&#10095;</a>
+        </div>
+        <div class="price">₹500 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Mens<br>Colour :- Blue<br>Pattern :- Solid<br>Material :- Syntethic Leather</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal6')">Copy ID</button>
+    </div>
+</div>
 
-    <footer>
-        <!-- Your footer content here -->
-    </footer>
+<!-- Modal 7 -->
+<div id="modal7" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal7')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car7.1.jpg" alt="Biker Boots Image 1">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal7')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal7')">&#10095;</a>
+        </div>
+        <div class="price">₹500 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Mens<br>Colour :- Gray<br>Pattern :- Textured<br>Material :- Syntethic</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal7')">Copy ID</button>
+    </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sliders = document.querySelectorAll('.product-slider');
+<!-- Modal 8 -->
+<div id="modal8" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal8')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car8.1.jpg" alt="Biker Boots Image 1">
+                <img src="car8.2.jpg" alt="Biker Boots Image 2">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal8')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal8')">&#10095;</a>
+        </div>
+        <div class="price">₹500 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Mens<br>Colour :- Red<br>Pattern :- Solid<br>Material :- Syntethic Leather</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal8')">Copy ID</button>
+    </div>
+</div>
 
-            sliders.forEach(slider => {
-                const prevButton = slider.querySelector('.prev');
-                const nextButton = slider.querySelector('.next');
-                const sliderImages = slider.querySelector('.slider-images');
-                const images = sliderImages.querySelectorAll('img');
-                let index = 0;
+<!-- Modal 9 -->
+<div id="modal9" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal9')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car9.1.jpg" alt="Biker Boots Image 1">
+                <img src="car9.2.jpg" alt="Biker Boots Image 2">
+                <img src="car9.3.jpg" alt="Biker Boots Image 3">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal9')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal9')">&#10095;</a>
+        </div>
+        <div class="price">₹650 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Girls<br>Colour :- White<br>Pattern :- Printed<br>Ankle Height :- High Top</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal9')">Copy ID</button>
+    </div>
+</div>
 
-                function updateSlider() {
-                    const offset = -index * 100;
-                    sliderImages.style.transform = `translateX(${offset}%)`;
-                }
+<!-- Modal 10 -->
+<div id="modal10" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal10')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="car10.1.jpg" alt="Biker Boots Image 1">
+                <img src="car10.2.jpg" alt="Biker Boots Image 2">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal10')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal10')">&#10095;</a>
+        </div>
+        <div class="price">₹300 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Womwns And Girls<br>Colour :- Black<br>Pattern :- Solid<br>Ankle Height :- regular</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal10')">Copy ID</button>
+    </div>
+</div>
 
-                prevButton.addEventListener('click', () => {
-                    index = (index > 0) ? index - 1 : images.length - 1;
-                    updateSlider();
-                });
+<!-- Modal 11 -->
+<div id="modal11" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal11')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="shoes11.1.jpg" alt="Biker Boots Image 1">
+                <img src="shoes11.2.jpg" alt="Biker Boots Image 2">
+                <img src="shoes11.3.jpg" alt="Biker Boots Image 3">
+                <img src="shoes11.4.jpg" alt="Biker Boots Image 3">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal11')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal11')">&#10095;</a>
+        </div>
+        <div class="price">₹500 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Womwns And Girls<br>Colour :- Black And Gray<br>Pattern :- Solid<br>Material :- Fur</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal11')">Copy ID</button>
+    </div>
+</div>
 
-                nextButton.addEventListener('click', () => {
-                    index = (index < images.length - 1) ? index + 1 : 0;
-                    updateSlider();
-                });
-            });
+<!-- Modal 12 -->
+<div id="modal12" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal12')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="shoes12.1.jpg" alt="Biker Boots Image 1">
+                <img src="shoes12.2.jpg" alt="Biker Boots Image 2">
+                <img src="shoes12.3.jpg" alt="Biker Boots Image 3">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal12')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal12')">&#10095;</a>
+        </div>
+        <div class="price">₹250 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Womens<br>Colour :- Cream<br>Pattern :- Solid<br>Material :- Syntethic Leather</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal12')">Copy ID</button>
+    </div>
+</div>
 
-            const showMoreButtons = document.querySelectorAll('.show-more-button');
-            
-            showMoreButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const productItem = button.closest('.product-item');
-                    const moreDescription = productItem.querySelector('.more-description');
-                    
-                    if (moreDescription.style.display === 'block') {
-                        moreDescription.style.display = 'none';
-                        button.textContent = 'See More';
-                    } else {
-                        moreDescription.style.display = 'block';
-                        button.textContent = 'See Less';
-                    }
-                });
-            });
+<!-- Modal 13 -->
+<div id="modal13" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal13')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="shoes13.1.jpg" alt="Biker Boots Image 1">
+                <img src="shoes13.2.jpg" alt="Biker Boots Image 2">
+                <img src="shoes13.3.jpg" alt="Biker Boots Image 3">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal13')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal13')">&#10095;</a>
+        </div>
+        <div class="price">₹250 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Womens<br>Colour :- Sky Blue<br>Pattern :- Solid<br>Material :- Syntethic Leather</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal13')">Copy ID</button>
+    </div>
+</div>
 
-            const copyButtons = document.querySelectorAll('.copy-id-button');
-            
-            copyButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const id = button.getAttribute('data-id');
-                    navigator.clipboard.writeText(id).then(() => {
-                        alert('Product ID copied to clipboard!');
-                    }).catch(err => {
-                        console.error('Failed to copy: ', err);
-                    });
-                });
-            });
+<!-- Modal 14 -->
+<div id="modal14" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal14')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="shoes14.1.jpg" alt="Biker Boots Image 1">
+                <img src="shoes14.2.jpg" alt="Biker Boots Image 2">
+                <img src="shoes14.3.jpg" alt="Biker Boots Image 3">
+                <img src="shoes14.4.jpg" alt="Biker Boots Image 3">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal14')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal14')">&#10095;</a>
+        </div>
+        <div class="price">₹250 Free delivery</div>
+        <div class="description">Product Details<br> <br>Ideal For :- Womens<br>Colour :- Blue, Pink And Dark Blue<br>Pattern :- Printed<br>Material :- Eva</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal14')">Copy ID</button>
+    </div>
+</div>
+
+<!-- Modal 15 -->
+<div id="modal15" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal15')">&times;</span>
+        <div class="slider">
+            <div class="slides">
+                <img src="shoes15.1.jpg" alt="Biker Boots Image 1">
+                <img src="shoes15.2.jpg" alt="Biker Boots Image 2">
+                <img src="shoes15.3.jpg" alt="Biker Boots Image 3">
+            </div>
+            <a class="prev" onclick="plusSlides(-1, 'modal15')">&#10094;</a>
+            <a class="next" onclick="plusSlides(1, 'modal15')">&#10095;</a>
+        </div>
+        <div class="description">Stylish and comfortable biker boots.</div>
+        <div class="price">$269.99</div>
+        <button class="buy-btn" onclick="redirectToCheckout()">Buy Now</button>
+        <button class="copy-id-btn" onclick="copyID('modal15')">Copy ID</button>
+    </div>
+</div>
+
+<script>
+    // Modal open and close functions
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+    }
+
+    // Slider functions
+    let slideIndex = 1;
+    
+    function plusSlides(n, modalId) {
+        showSlides(slideIndex += n, modalId);
+    }
+    
+    function showSlides(n, modalId) {
+        let i;
+        const slides = document.querySelectorAll(`#${modalId} .slides img`);
+        if (n > slides.length) { slideIndex = 1; }
+        if (n < 1) { slideIndex = slides.length; }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slides[slideIndex - 1].style.display = "block";
+    }
+    
+    function redirectToCheckout() {
+        window.location.href = "checkout page.html"; // replace with your checkout page URL
+    }
+
+    function copyID(modalId) {
+        const modal = document.getElementById(modalId);
+        const copyText = modal.getElementsByClassName('price')[0].textContent;
+        navigator.clipboard.writeText(copyText).then(() => {
+            alert("ID copied to clipboard");
+        }).catch(err => {
+            console.error("Failed to copy ID: ", err);
         });
-    </script>
+    }
+    
+    // Initialize sliders
+    document.querySelectorAll('.modal').forEach(modal => {
+        const modalId = modal.id;
+        showSlides(slideIndex, modalId);
+    });
+</script>
+
 </body>
 </html>
